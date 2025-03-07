@@ -72,22 +72,35 @@
     </style>
 </head>
 <body>
-    <div class="search-container">
-        <form class="search-form" action="/search" method="POST">
-            <input type="text" name="searchTerm" class="search-input" placeholder="Enter your search term...">
-            <button type="submit" class="search-button">Search</button>
-        </form>
-    </div>
-    
     <div class="results-container">
-        <!-- Example result box (this can be dynamically generated) -->
-        <div class="result-box">
-            <img src="https://via.placeholder.com/200x150" alt="Sample Image">
-            <p>Sample Name</p>
-            <div class="description">
-                <%= content %>
+        <% if (results && results.length > 0) { %>
+            <% results.forEach(book => { %>
+                <div class="result-box">
+                    <% if (book.cover_i) { %>
+                        <img src="https://covers.openlibrary.org/b/id/<%= book.cover_i %>-M.jpg" 
+                             alt="<%= book.title %>" 
+                             onerror="this.src='https://via.placeholder.com/200x150'">
+                    <% } else { %>
+                        <img src="https://via.placeholder.com/200x150" alt="No cover available">
+                    <% } %>
+                    <p><strong><%= book.title %></strong></p>
+                    <div class="description">
+                        <% if (book.author_name && book.author_name.length > 0) { %>
+                            Author: <%= book.author_name[0] %><br>
+                        <% } %>
+                        <% if (book.first_publish_year) { %>
+                            Published: <%= book.first_publish_year %>
+                        <% } %>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="result-box">
+                <div class="description">
+                    <%= content %>
+                </div>
             </div>
-        </div>
+        <% } %>
     </div>
 </body>
 </html>
