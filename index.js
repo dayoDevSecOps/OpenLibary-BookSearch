@@ -13,13 +13,14 @@ app.get("/", (req, res) => {
   res.render("index.ejs", { content: "Waiting for data...", results: [] });
 });
 
+// Returns API search response
 app.post("/search", async (req, res) => {
   try {
     const searchTerm = req.body.searchTerm.toLowerCase();
     const modifiedSearchTerm = searchTerm.split(' ').join('+');
     const apiUrl = `${API_URL}/search.json?q=${modifiedSearchTerm}&fields=*,availability&limit=10`;
     
-    console.log("Modified URL:", apiUrl);
+    // console.log("Modified URL:", apiUrl);
     
     const response = await axios.get(apiUrl);
     const books = response.data.docs;
